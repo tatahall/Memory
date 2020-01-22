@@ -10,6 +10,10 @@ export default function App(){
     const [dimension, setDimension] = useState(400);
     const [solved, setSolved] = useState([]);
     const [disabled, setDisabled] = useState(false);
+    const [score, setScore] = useState(0);
+    const [wins, setWins] = useState(0);
+    const [losses, setLosses] = useState(0);
+    const [guesses, setGuesses] = useState(0);//wrong guess
     //add variables for score, wins, losses and guesses
 
     useEffect(() => {
@@ -19,17 +23,18 @@ export default function App(){
 
     useEffect(() => {
         preloadImages()
-    }, cards)
-
-    //use effect for score
+      }, cards);
 
     useEffect(() => {
         const resizeListener = window.addEventListener('resize', resizeBoard)
         //component will unmount
         return () => window.removeEventListener('resize', resizeListener)
-        
-    })
-    
+        })
+    //use effect for score
+    //validateScore is to validate that the score has reached a specific number for reset?
+    useEffect(() => {
+        validateScore();//checkscore
+    }, [score]);
 
     const handleClick = (id) => {
         setDisabled(true);
@@ -42,23 +47,59 @@ export default function App(){
             if (isMatch(id)){
                 setSolved([...solved, flipped[0], id])
                 resetCards()
-                //score update
+                updateScore(score, validateScore);
             }else{
-                setTimeout(resetCards, 3000)
+                doesntMatch();
             }
         }
         //setFlipped([...flipped, id]);
     }
+
+    const doesntMatch = () => {
+        updateGuess(guesses, validateGuess);
+        setTimeout(resetCards, 2000);
+    }  
     
-    const preloadImages = () => {
-        cards.map(card => {
-            const src = '/img/${card.type}.png'
-            new Image().src = src
-        })
-         
+    function updateScore(score, cb){
+        var newScore = score + 1;
+        setScore(score + 1);
+        cb(newScore)
     }
 
-    const resetCards = () => {
+    function updateGuess(guesses, cb){
+        var newGuess = guesses + 1;
+        setGuesses(score + 1);
+        cb(newGuess);
+    }
+
+    const validateScore = (score) => {
+        if(score > 5){
+            setWins(wins + 1);
+            setTimeout(newGame, 2000);
+        }
+    }
+
+    const validateGuess = (wrongGuess) => {
+        if(wrongGuess > 7){
+            setLosses(losses + 1);
+            setTimeout(newGame, 2000);
+        }
+    }
+
+    const newGame = () => {
+        setSolved([]);
+        setCards(initializeDeck());
+        setGuesses(0);
+        setScore(0);
+      }
+    
+      const preloadImages = () => 
+      cards.map((card) => {
+        const src = `/img/${card.type}.png`;
+        new Image().src = src;
+      })
+  
+      const resetCards = () => {
         setFlipped([])
         setDisabled(false)
     }
@@ -70,7 +111,7 @@ export default function App(){
         const flippedCard = cards.find((card) => flipped[0] === card.id)
         return flippedCard.type === clickedCard.type
     }
-
+      
     const resizeBoard = () => {
         setDimension(Math.min(
             document.documentElement.clientWidth,
@@ -78,12 +119,13 @@ export default function App(){
         ),
         )
     }
-
     return (
         <div>
-            <h2>
-                Do you know where the cards are?
-            </h2>
+            <h1 className="title">Yarn Clicky</h1>
+            <hr/>
+            <h3 className="question">
+                Can you make the yarn sayings match?
+            </h3>
             <Board
             dimension={dimension}
             cards={cards}
@@ -92,8 +134,11 @@ export default function App(){
             disabled={disabled}
             solved={solved}
             />
-
-           
+            <p className="score">wins = {wins}</p>
+            <p className="score">losses = {losses}</p>   
+            <p className="score">guesses = {guesses}</p> 
+            <p className="score">score = {score}</p>
+            
         </div>
     )
 };

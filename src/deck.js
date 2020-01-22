@@ -12,7 +12,7 @@ function shuffle(array){
 
 export default function initializeDeck(){
     let id = 0;
-    const cards = ['yarn doit', 'yarn fun', 'yarn iwillcroch', 'yarn knotty', 'yarn magic', 'yarn nowork', 'yarn punch'
+    const cards = ['yarn doit', 'yarn fun', 'yarn iwillcroch', 'yarn knotty', 'yarn magic', 'yarn nowork', 'yarn punch', 'yarn 500', 'yarn acronym', 'yarn mug'
 ].reduce((acc, type) => {
     acc.push({
       id: id++,

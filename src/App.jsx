@@ -38,7 +38,7 @@ export default function App(){
 
     const handleClick = (id) => {
         setDisabled(true);
-        if (flipped.length === 0){
+        if (flipped.length === 0){//if no cards are flipped, set flip to card id and disabled to
             setFlipped([id])
             setDisabled(false)
         }else{
@@ -68,7 +68,7 @@ export default function App(){
 
     function updateGuess(guesses, cb){
         var newGuess = guesses + 1;
-        setGuesses(score + 1);
+        setGuesses(guesses + 1);
         cb(newGuess);
     }
 

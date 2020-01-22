@@ -126,6 +126,8 @@ export default function App(){
             <h3 className="question">
                 Can you make the yarn sayings match?
             </h3>
+            <p className="score">guesses = {guesses}  wins = {wins}  losses = {losses}</p>
+            <p className="score">score = {score}</p>
             <Board
             dimension={dimension}
             cards={cards}
@@ -134,11 +136,7 @@ export default function App(){
             disabled={disabled}
             solved={solved}
             />
-            <p className="score">wins = {wins}</p>
-            <p className="score">losses = {losses}</p>   
-            <p className="score">guesses = {guesses}</p> 
-            <p className="score">score = {score}</p>
-            
+                        
         </div>
     )
 };
